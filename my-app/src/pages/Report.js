@@ -85,7 +85,7 @@ function Report(){
     return(
         <section>
             <h1>Reports page</h1>
-            {/*<Report menuItems={menuItems} orders ={orders}/>*/}
+
 
             <h2>order Items</h2>
             {orders.map((order) => (
