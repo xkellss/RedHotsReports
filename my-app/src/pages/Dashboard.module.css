@@ -1,0 +1,10 @@
+.dashboard{
+}
+.sales{
+
+}
+.chart {
+    width: 80%; /* Set the desired width here */
+    height: 50vh;
+    margin: 0 auto;
+}
