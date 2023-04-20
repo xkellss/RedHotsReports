@@ -19,14 +19,13 @@ function Dashboard({dataReport}){
         datasets: [
             {
                 label: 'Net Sales',
-                // Replace this with your weekly sales data
                 data: weeklyNetSales,
                 backgroundColor: 'rgba(200,152,15, 0.6)',
                 yAxisID: 'y1',
             },
             {
                 label: 'Transaction Count',
-                // Replace this with your transaction count data
+                //replace w data
                 data: [30,40,25,28,13,19,10],
                 type: 'line',
                 borderColor: 'rgba(152,16,17, 1)',
@@ -54,7 +53,6 @@ function Dashboard({dataReport}){
             <div className={classes.sales}>
                 <div>Gross Sales: ${grossSales}</div>
                 <div>Net Sales: ${netSales}</div>
-                {/* Add other statistics as needed, e.g., salesTax, transactions, etc. */}
             </div>
             <div className={classes.chart}>
                 <Bar data={chartData} options={chartOptions} />
