@@ -54,7 +54,7 @@ function Dashboard({dataReport}){
             <div className={classes.sales}>
                 <div>Gross Sales: ${grossSales}</div>
                 <div>Net Sales: ${netSales}</div>
-                {/* Add other statistics as needed, e.g., salesTax, transactions, etc. */}
+
             </div>
             <div className={classes.chart}>
                 <Bar data={chartData} options={chartOptions} />
