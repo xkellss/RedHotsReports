@@ -1,0 +1,35 @@
+.listContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.order{
+    display: inline-block;
+    width: 80%;
+    /*border: red solid;*/
+    font-size: 20px;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 2rem;
+    background-color: white;
+
+}
+ol li {
+    counter-increment: list;
+    list-style-type: none;
+    position: relative;
+}
+
+ol li:before {
+    color: #e75204;
+    content: counter(list) ".";
+    left: -32px;
+    position: absolute;
+    text-align: right;
+    width: 26px;
+    padding-left: 2px;
+}
+.count{
+    float: right;
+}

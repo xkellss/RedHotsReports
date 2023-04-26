@@ -8,14 +8,13 @@ Chart.register(...registerables);
 function Dashboard({dataReport}){
 
     const {
-        grossSales,
-        netSales,
-        salesTax,
         weeklyNetSales,
+        weeklyTransactions,
+        weeklyDates
     } = dataReport;
 
     const chartData = {
-        labels: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+        labels: weeklyDates,
         datasets: [
             {
                 label: 'Net Sales',
@@ -26,7 +25,7 @@ function Dashboard({dataReport}){
             {
                 label: 'Transaction Count',
                 //get data
-                data: [30,40,25,28,13,19,10],
+                data: weeklyTransactions,
                 type: 'line',
                 borderColor: 'rgba(152,16,17, 1)',
                 borderWidth: 2,
@@ -46,17 +45,18 @@ function Dashboard({dataReport}){
                 },
             },
         },
+        height: 100,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Title Sales By Period'
+            }
+        }
     };
     return(
         <div className={classes.dashboard}>
-            <h1>Report Dashboard</h1>
-            <div className={classes.sales}>
-                <div>Gross Sales: ${grossSales}</div>
-                <div>Net Sales: ${netSales}</div>
-
-            </div>
             <div className={classes.chart}>
-                <Bar data={chartData} options={chartOptions} />
+                <Bar data={chartData} width={13} height={4} options={chartOptions} />
             </div>
         </div>
     )

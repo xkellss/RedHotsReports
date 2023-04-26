@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from "react";
 import Dashboard from './Dashboard';
+import OrderData from './OrderData';
+import TopItems from './TopItems';
+import classes from './ReportPage.module.css';
 
 function Report(){
     const [isLoading, setIsLoading] = useState(true)
@@ -8,7 +11,7 @@ function Report(){
 
     useEffect(() => {
         setIsLoading(true);
-
+        
         fetch('/json/item.json')
             .then((response) => {
                 return response.json();
@@ -54,79 +57,51 @@ function Report(){
             </section>
         );
     }
-    const targetDate = '2023-03-21';
-    const targetMonth = '2023-03';
-
-    const ordersOnTargetDate = orders.filter(order => order.orderDate.startsWith(targetDate));
-    const ordersOnTargetMonth = orders.filter(order => order.orderDate.startsWith(targetMonth));
-
-    const totalSalesOnTargetDate = ordersOnTargetDate.reduce((total, order) => {
-        if (order.total === 0 ){
-            return total + order.subtotal;
-        }else {
-            return total + order.subtotalTax;
-        }
-    },0);
-
-    const totalSalesOnTargetMonth = ordersOnTargetMonth.reduce((total, order) => {
-        if (order.total === 0 ){
-            return total + order.subtotal;
-        }else {
-            return total + order.subtotalTax;
-        }
-    },0);
+    //net sales = subtota
+    //gross sales = subtotalTax
 
     const grossSales = orders.reduce((total,order) => total + order.subtotalTax, 0)
     const netSales = orders.reduce((total,order) => total + order.subtotal, 0)
     const salesTax = orders.reduce((total,order)=> total+ order.total,0)
 
-    console.log(`Total sales on ${targetDate}: ${totalSalesOnTargetDate}`);
-    console.log(`Total sales on ${targetMonth}: ${totalSalesOnTargetMonth}`);
 
     function dayOfWeek(dateString) {
         const date = new Date(dateString);
         return date.getDay();
     }
         const weeklyNetSales = new Array(7).fill(0);
+    const weeklyTransactions = new Array(7).fill(0);
+    const weeklyDates = new Array(7).fill('');
 
         orders.forEach((order) => {
             const weekDay = dayOfWeek(order.orderDate);
             weeklyNetSales[weekDay] += order.subtotal;
+            weeklyTransactions[weekDay] ++;
+            weeklyDates[weekDay] = new Date(order.orderDate).toLocaleDateString('en-US', {
+                month: '2-digit',
+                day: '2-digit'
+            });
         });
+
 
     const dataReport = {
         grossSales: grossSales,
         netSales:netSales,
         salesTax: salesTax,
         weeklyNetSales: weeklyNetSales,
+        weeklyTransactions: weeklyTransactions,
+        weeklyDates: weeklyDates,
     };
 
     return(
-        <section>
-
-
-            <Dashboard dataReport={dataReport}/>
-            {/*<h2>order Items</h2>*/}
-            {/*{orders.map((order) => (*/}
-            {/*    <div key={order.orderId}>*/}
-            {/*        <p>OrderID: {order.orderId}</p>*/}
-            {/*        <p>Email: {order.customerAccount.email}</p>*/}
-            {/*        <p>Name: {order.customerAccount.firstName} {order.customerAccount.lastName}</p>*/}
-            {/*        <p>Phone Number: {order.customerAccount.phoneNumber}</p>*/}
-            {/*        {order.total === 0 ? (*/}
-            {/*            <p> Subtotal: ${order.subtotal}</p>*/}
-            {/*        ) : (*/}
-            {/*            <p> SubtotalTax: ${order.subtotalTax}</p>*/}
-            {/*        )}*/}
-            {/*        <br/>*/}
-            {/*    </div>*/}
-            {/*    )*/}
-            {/*)*/}
-            {/*}*/}
-            {/*    <p>Total Subtotal: ${orders.reduce((total, order) => total + order.subtotal, 0)}</p>*/}
-            {/*        <p>Total Sales in {targetDate} : ${totalSalesOnTargetDate}</p>*/}
-            {/*        <p>Total Sales in {targetMonth} : ${totalSalesOnTargetMonth}</p>*/}
-
+        <div>
+        <section className={classes.report}>
+            <h4 className={classes.dashboard}>Dashboard</h4>
+            {/*order data*/}
+                <OrderData dataReport={dataReport} className={classes.reportData}/>
+                <Dashboard orders={orders} dataReport={dataReport} className={classes.reportData} />
+                <TopItems orders={orders} menuItems={menuItems} className={classes.reportData} />
         </section>
+        </div>
     )
 } export default Report;
